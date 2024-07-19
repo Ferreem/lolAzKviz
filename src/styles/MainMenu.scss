@@ -1,0 +1,30 @@
+*{
+    color: white;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100vh;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+
+    .main{
+        margin-top: 20vh;
+        .header{
+            display: flex;
+            justify-content: center;
+        }
+    }
+    
+
+}
+
