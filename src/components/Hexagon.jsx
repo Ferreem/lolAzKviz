@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-function Hexagon({ className, children, onClick, index }) {
+function Hexagon({ className, children, onClick, status }) {
     const hexStyle = {
         height: '120%',
         width: '92%',
@@ -12,7 +12,7 @@ function Hexagon({ className, children, onClick, index }) {
         alignItems: 'center',
         flexDirection: 'column',
         cursor: 'pointer',
-        backgroundColor: '#3498db',
+        backgroundColor: '#3498db', 
         transition: '0.3s',
     };
 
@@ -23,9 +23,9 @@ function Hexagon({ className, children, onClick, index }) {
             scale: 1,
             transition: {
                 duration: 0.1,
-                ease: [0, 0.71, 0.2, 1.01]
-            }
-        }
+                ease: [0, 0.68, 0.2, 1.01],
+            },
+        },
     };
 
     return (
@@ -33,7 +33,7 @@ function Hexagon({ className, children, onClick, index }) {
             style={hexStyle} 
             className={className}
             onClick={onClick}
-            whileHover={{ opacity: 1 /*brighter color */ }}
+            whileHover={{ opacity: 1 }}
             variants={itemVariants}
         >
             {children}
