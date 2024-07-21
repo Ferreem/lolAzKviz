@@ -8,7 +8,7 @@ import QuestionBox from '../components/QuestionBox';
 function Game() {
   const [showQuestionBox, setShowQuestionBox] = useState(false);
   const [clickedHexagon, setClickedHexagon] = useState(null);
-  const [hexagonStatuses, setHexagonStatuses] = useState({});
+  const [hexagonStatus, setHexagonStatus] = useState({});
   const [currentPlayer, setCurrentPlayer] = useState('p1');
   const [player1Hexagons, setPlayer1Hexagons] = useState([]);
   const [player2Hexagons, setPlayer2Hexagons] = useState([]);
@@ -25,7 +25,7 @@ function Game() {
 
   const handleOpenQuestionBox = (key) => {
     console.log("handleOpenQuestionBox called with key:", key);
-    if (!hexagonStatuses[key]) {
+    if (!hexagonStatus[key]) {
       setClickedHexagon(key);
       setShowQuestionBox(true);
     } else {
@@ -33,29 +33,52 @@ function Game() {
     }
   };
 
+  //check if somebody won
+  const checkIfWon = (playerHexagons, requiredMatchCount = 3) => {
+    console.log(playerHexagons);
+  
+    // Define winning combinations
+    const winningCombinations = [
+      [22, 23, 24, 25, 26, 27, 28], // Top row
+      [1, 2, 4, 7, 11, 16, 22],     // Left diagonal
+      [1, 3, 6, 10, 15, 21, 28],    // Right diagonal
+      // Add more winning combinations as needed
+    ];
+  
+    // Check if playerHexagons contains a subset of any winning combination
+    for (let combination of winningCombinations) {
+      // Check if there are enough matching elements in the player's hexagons
+      const matchCount = combination.filter(hex => playerHexagons.includes(hex)).length;
+      if (matchCount >= requiredMatchCount) {
+        return true; // Player has a winning subset
+      }
+    }
+  
+    return false; // No winning combination found
+  };
   
 
-  useEffect(() => {
-    console.log('Player 1 Hexagons:', player1Hexagons);
-  }, [player1Hexagons]);
-
-  useEffect(() => {
-    console.log('Player 2 Hexagons:', player2Hexagons);
-  }, [player2Hexagons]);
 
   const handleSubmitAnswer = (correct) => {
-    console.log("Answer submitted for hexagon:", clickedHexagon);
     if (correct) {
       const newColor = currentPlayer === 'p1' ? '#ff9800' : '#4caf50';
-      setHexagonStatuses(prev => ({
+      setHexagonStatus(prev => ({
         ...prev,
         [clickedHexagon]: { color: newColor }
       }));
   
       if (currentPlayer === 'p1') {
         setPlayer1Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
+        console.log(checkIfWon(player1Hexagons))
+        if(checkIfWon(player1Hexagons)){
+          console.log('P1 WON')
+        }
       } else {
         setPlayer2Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
+        console.log(checkIfWon(player2Hexagons))
+        if(checkIfWon(player2Hexagons)){
+          console.log('P2 WON')
+        }
       }
     }
   
@@ -68,20 +91,19 @@ function Game() {
     const grid = [];
     const rows = 7;
     const cols = [1, 2, 3, 4, 5, 6, 7];
-    let index = 0;
+    let index = 1;
   
     for (let y = 1; y <= rows; y++) {
       for (let x = 1; x <= cols[y - 1]; x++) {
         const key = `y${y}x${x}`;
         const className = `hexagon ${key}`;
-        const status = hexagonStatuses[index] || {};
+        const status = hexagonStatus[index] || {};
         grid.push(
           <Hexagon
             key={key}
             className={className}
             index={index}
             onClick={(i) => {
-              console.log("Hexagon clicked in grid with index:", i);
               handleOpenQuestionBox(i);
             }}
             status={status}
