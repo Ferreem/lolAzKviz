@@ -5,7 +5,7 @@ function QuestionBox({ onSubmit }) {
   const [userAnswer, setUserAnswer] = useState('');
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [currentQuestionNum, setCurrentQuestionNum] = useState(null);
-
+  
   const fetchRandomQuestion = () => {
     const question = QuestionManager.getRandomQuestion();
     const questionNum = QuestionManager.questions.indexOf(question);
@@ -18,7 +18,7 @@ function QuestionBox({ onSubmit }) {
     const correct = QuestionManager.checkAnswer(currentQuestionNum, userAnswer);
     onSubmit(correct);
   };
-
+ 
   useEffect(() => {
     fetchRandomQuestion();
   }, []);
