@@ -15,7 +15,6 @@ function Game() {
 
   const containerVariants = {
     visible: {
-      opacity: 0.75,
       transition: {
         delayChildren: 0.2,
         staggerChildren: 0.1,
@@ -24,29 +23,27 @@ function Game() {
   };
 
   const handleOpenQuestionBox = (index) => {
-    console.log("handleOpenQuestionBox called with index:", index);
+    
     const key = `${index[0]},${index[1]}`;
     if (!hexagonStatus[key]) {
       setClickedHexagon(key);
       setShowQuestionBox(true);
-    } else {
-      console.log("This hexagon is already claimed");
     }
   };
 
-  //check if somebody won
+  /*check if somebody won
 
   const checkIfWon = (playerHexagones) => {
     console.log(player1Hexagons.map())
 
-  }
+  }*/
   
-  useEffect(() => {console.log('hexagonStatus updated:', hexagonStatus);}, [hexagonStatus]);
+  useEffect(() => {console.log('hexagonStatus updated:', hexagonStatus)}, [hexagonStatus]);
 
 
   const handleSubmitAnswer = (correct) => {
     if (correct) {
-      const newColor = currentPlayer === 'p1' ? '#ff9800' : '#4caf50';
+      const newColor = currentPlayer === 'p1' ? '#0D4B8C' : '#862941';
       setHexagonStatus(prev => ({
         ...prev,
         [clickedHexagon]: { color: newColor }
@@ -54,14 +51,14 @@ function Game() {
   
       if (currentPlayer === 'p1') {
         setPlayer1Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
-        if(checkIfWon(player1Hexagons)){
+        /*if(checkIfWon(player1Hexagons)){
           console.log('P1 WON')
-        }
+        }*/
       } else {
         setPlayer2Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
-        if(checkIfWon(player2Hexagons)){
+        /*if(checkIfWon(player2Hexagons)){
           console.log('P2 WON')
-        }
+        }*/
       }
     }
   
@@ -92,7 +89,7 @@ function Game() {
           >
             {currentIndex}
           </Hexagon>
-        );
+        )
         currentIndex++;
       }
     }

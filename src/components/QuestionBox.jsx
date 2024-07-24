@@ -25,7 +25,7 @@ function QuestionBox({ onSubmit }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-slate-500 p-6 rounded-lg shadow-lg relative w-2/4 max-w-2xl">
+      <div className=" p-6 rounded-lg shadow-lg relative w-2/4 max-w-2xl" style={{backgroundColor: '#717787'}}>
         <p className=' z-50'>{currentQuestion}</p>
         <input
           type="text"

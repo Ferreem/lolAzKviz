@@ -17,7 +17,8 @@ function Button({ link, onClick, children }) {
     <div className="flex justify-center align-middle">
       <motion.button
         onClick={handleClick}
-        className="m-4 bg-slate-800 w-48 p-3 text-l rounded-lg"
+        style={{backgroundColor:'#717787'}}
+        className="m-4  w-48 p-3 text-l rounded-lg"
         whileTap={{ scale: 0.95 }}
         whileHover={{ boxShadow: "0px 0px 8px rgb(0, 0, 0)" }}
         initial={{ opacity: 0, scale: 0.5 }}

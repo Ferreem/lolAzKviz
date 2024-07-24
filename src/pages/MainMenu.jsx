@@ -20,14 +20,16 @@ function MainMenu() {
   return (
     <>
       <Navbar />
-      <div className='main'>
-        <div className='header'>
-          <Header />
-        </div>
-        <div className='my-10'>
-          <Button onClick={handlePlayWithFriend}>Play with friend</Button>
-          <Button>Quick Play</Button>
-          <Button>Tutorial</Button>
+      <div className='wrap'>
+        <div className='main'>
+          <div className='header'>
+            <Header />
+          </div>
+          <div className='my-10'>
+            <Button onClick={handlePlayWithFriend}>Play with friend</Button>
+            <Button>Quick Play</Button>
+            <Button>Tutorial</Button>
+          </div>
         </div>
       </div>
     </>

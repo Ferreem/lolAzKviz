@@ -12,14 +12,15 @@ function Hexagon({ className, children, onClick, index, color }) {
         alignItems: 'center',
         flexDirection: 'column',
         cursor: 'pointer',
-        backgroundColor: color || '#3498db',
+        backgroundColor: color || '#A5ABBD',
         transition: '0.3s',
+        
     };
 
     const itemVariants = {
         hidden: { opacity: 0, scale: 0 },
         visible: {
-            opacity: 0.8,
+            opacity: 1,
             scale: 1,
             transition: {
                 duration: 0.1,
@@ -33,7 +34,6 @@ function Hexagon({ className, children, onClick, index, color }) {
           style={hexStyle}
           className={className}
           onClick={() => {
-            console.log("Hexagon clicked with index:", index);
             onClick(index);
           }}
           whileHover={{ opacity: 1 }}
