@@ -31,14 +31,66 @@ function Game() {
     }
   };
 
-  /*check if somebody won
-
-  const checkIfWon = (playerHexagones) => {
-    console.log(player1Hexagons.map())
-
-  }*/
+  const checkIfWon = (playerHexagons) => {
+    // Check for [n,6]
+    const hasN6 = playerHexagons.some(hexagon => hexagon.split(',')[1] === '6');
   
-  useEffect(() => {console.log('hexagonStatus updated:', hexagonStatus)}, [hexagonStatus]);
+    // Check for [x,x]
+    const hasXX = playerHexagons.some(hexagon => {
+      const [x, y] = hexagon.split(',');
+      return x === y;
+    });
+  
+    // Check for [0,x]
+    const has0X = playerHexagons.some(hexagon => hexagon.split(',')[0] === '0');
+  
+    console.log('hasN6:', hasN6, 'hasXX:', hasXX, 'has0X:', has0X);
+    console.log('hexes', playerHexagons);
+  
+    if (hasN6 && hasXX && has0X) {
+      // Check if connected
+      const connected = areHexagonsConnected(playerHexagons);
+      console.log('Connected:', connected);
+      return connected;
+    }
+  
+    return false;
+  };
+  
+  const areHexagonsConnected = (hexagons) => {
+    if (hexagons.length === 0) return false;
+  
+    const visited = new Set();
+    const stack = [hexagons[0]];
+  
+    while (stack.length > 0) {
+      const current = stack.pop();
+      if (!visited.has(current)) {
+        visited.add(current);
+  
+        // Get neighbors
+        const neighbors = getNeighbors(current, hexagons);
+        console.log(`Current: ${current}, Neighbors: ${neighbors}`);
+        stack.push(...neighbors);
+      }
+    }
+  
+    console.log(`Visited: ${visited.size}, Total: ${hexagons.length}`);
+    return visited.size === hexagons.length;
+  };
+  
+  const getNeighbors = (hexagon, allHexagons) => {
+    const [x, y] = hexagon.split(',').map(Number);
+    const potentialNeighbors = [
+      `${x+1},${y}`, `${x-1},${y}`,
+      `${x},${y+1}`, `${x},${y-1}`,
+      `${x+1},${y-1}`, `${x-1},${y+1}`
+    ];
+    return potentialNeighbors.filter(neighbor => allHexagons.includes(neighbor));
+  };
+
+
+  
 
 
   const handleSubmitAnswer = (correct) => {
@@ -50,15 +102,21 @@ function Game() {
       }));
   
       if (currentPlayer === 'p1') {
-        setPlayer1Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
-        /*if(checkIfWon(player1Hexagons)){
-          console.log('P1 WON')
-        }*/
+        setPlayer1Hexagons(prev => {
+          const updatedHexagons = [...new Set([...prev, clickedHexagon])];
+          if(checkIfWon(updatedHexagons)){
+            console.log('P1 WON')
+          }
+          return updatedHexagons;
+        });
       } else {
-        setPlayer2Hexagons(prev => [...new Set([...prev, clickedHexagon])]);
-        /*if(checkIfWon(player2Hexagons)){
-          console.log('P2 WON')
-        }*/
+        setPlayer2Hexagons(prev => {
+          const updatedHexagons = [...new Set([...prev, clickedHexagon])];
+          if(checkIfWon(updatedHexagons)){
+            console.log('P2 WON')
+          }
+          return updatedHexagons;
+        });
       }
     }
   
@@ -74,24 +132,26 @@ function Game() {
     let currentIndex = 1;
   
     for (let y = 0; y < rows; y++) {
+      const row = [];
       for (let x = 0; x < cols[y]; x++) {
-        const key = `${x},${y}`;
+        const key = [x,y];
         const className = `hexagon y${y + 1}x${x + 1}`;
         const status = hexagonStatus[key] || {};
-        grid.push(
+        row.push(
           <Hexagon
             key={key}
             className={className}
             index={[x, y]}
-            onClick={(i) => handleOpenQuestionBox(i)}
+            onClick={() => handleOpenQuestionBox([x, y])}
             status={status}
             color={status.color}
           >
             {currentIndex}
           </Hexagon>
-        )
+        );
         currentIndex++;
       }
+      grid.push(row);
     }
     return grid;
   };
