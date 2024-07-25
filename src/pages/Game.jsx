@@ -4,6 +4,7 @@ import Hexagon from '../components/Hexagon';
 import { motion } from 'framer-motion';
 import '../styles/game.scss';
 import QuestionBox from '../components/QuestionBox';
+import WinBox from '../components/WinBox';
 
 function Game() {
   const [showQuestionBox, setShowQuestionBox] = useState(false);
@@ -12,6 +13,7 @@ function Game() {
   const [currentPlayer, setCurrentPlayer] = useState('p1');
   const [player1Hexagons, setPlayer1Hexagons] = useState([]);
   const [player2Hexagons, setPlayer2Hexagons] = useState([]);
+  const [showWinBox, setShowWinBox] = useState({show: false, player: null});
 
   const containerVariants = {
     visible: {
@@ -67,24 +69,20 @@ function Game() {
       const current = stack.pop();
       if (!visited.has(current)) {
         visited.add(current);
-  
-        // Get neighbors
         const neighbors = getNeighbors(current, hexagons);
-        console.log(`Current: ${current}, Neighbors: ${neighbors}`);
         stack.push(...neighbors);
       }
     }
   
-    console.log(`Visited: ${visited.size}, Total: ${hexagons.length}`);
     return visited.size === hexagons.length;
   };
   
   const getNeighbors = (hexagon, allHexagons) => {
     const [x, y] = hexagon.split(',').map(Number);
     const potentialNeighbors = [
-      `${x+1},${y}`, `${x-1},${y}`,
-      `${x},${y+1}`, `${x},${y-1}`,
-      `${x+1},${y-1}`, `${x-1},${y+1}`
+      `${x-1},${y-1}`, `${x},${y-1}`, //y-1
+      `${x+1},${y}`, `${x-1},${y}`, //same y
+      `${x},${y+1}`, `${x+1},${y+1}`, // y+1
     ];
     return potentialNeighbors.filter(neighbor => allHexagons.includes(neighbor));
   };
@@ -105,7 +103,7 @@ function Game() {
         setPlayer1Hexagons(prev => {
           const updatedHexagons = [...new Set([...prev, clickedHexagon])];
           if(checkIfWon(updatedHexagons)){
-            console.log('P1 WON')
+            setShowWinBox({ show: true, player: currentPlayer });
           }
           return updatedHexagons;
         });
@@ -113,7 +111,7 @@ function Game() {
         setPlayer2Hexagons(prev => {
           const updatedHexagons = [...new Set([...prev, clickedHexagon])];
           if(checkIfWon(updatedHexagons)){
-            console.log('P2 WON')
+            setShowWinBox({ show: true, player: currentPlayer });
           }
           return updatedHexagons;
         });
@@ -161,6 +159,7 @@ function Game() {
       <Navbar />
       <div id="main">
         {showQuestionBox && <QuestionBox onSubmit={handleSubmitAnswer} />}
+        {showWinBox.show && <WinBox player={showWinBox.player === 'p1' ? 'Player 1' : 'Player 2'} />}
         <div id="container">
           <div id="player1" className='player'>player1</div>
           

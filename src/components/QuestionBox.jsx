@@ -5,18 +5,30 @@ function QuestionBox({ onSubmit }) {
   const [userAnswer, setUserAnswer] = useState('');
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [currentQuestionNum, setCurrentQuestionNum] = useState(null);
+  const [usedQuestions, setUsedQuestions] = useState([]);
   
   const fetchRandomQuestion = () => {
-    const question = QuestionManager.getRandomQuestion();
+    let availableQuestions = QuestionManager.questions.filter((_, index) => !usedQuestions.includes(index));
+    
+    if (availableQuestions.length === 0) {
+      setUsedQuestions([]);
+      availableQuestions = QuestionManager.questions;
+    }
+    
+    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+    const question = availableQuestions[randomIndex];
     const questionNum = QuestionManager.questions.indexOf(question);
+    
     setCurrentQuestion(question);
     setCurrentQuestionNum(questionNum);
     setUserAnswer('');
+    setUsedQuestions(prev => [...prev, questionNum]);
   };
 
   const handleAnswerSubmit = () => {
     const correct = QuestionManager.checkAnswer(currentQuestionNum, userAnswer);
     onSubmit(correct);
+    fetchRandomQuestion(); // Fetch a new question after submitting
   };
  
   useEffect(() => {
