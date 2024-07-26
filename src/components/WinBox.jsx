@@ -2,6 +2,7 @@ import Button from "./Button";
 import { useNavigate } from 'react-router-dom';
 
 function WinBox({ player }) {
+  console.log('WinBox rendered with player:', player);
     const navigate = useNavigate();
 
     const returnToMainMenu = () => {

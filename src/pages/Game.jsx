@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import '../styles/game.scss';
 import QuestionBox from '../components/QuestionBox';
 import WinBox from '../components/WinBox';
+import TimeSlider from '../components/TimeSlider';
 
 function Game() {
   const [showQuestionBox, setShowQuestionBox] = useState(false);
@@ -14,6 +15,8 @@ function Game() {
   const [player1Hexagons, setPlayer1Hexagons] = useState([]);
   const [player2Hexagons, setPlayer2Hexagons] = useState([]);
   const [showWinBox, setShowWinBox] = useState({show: false, player: null});
+  const [timeLeft, setTimeLeft] = useState(720); // timer
+  const [timeLeftQuestion, setTimeLeftQuestion] = useState(30);
 
   const containerVariants = {
     visible: {
@@ -23,6 +26,28 @@ function Game() {
       },
     },
   };
+
+  const durationGame = 720;
+  const durationQuestion = 30;
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      if (player1Hexagons.length === player2Hexagons.length) {
+        setShowWinBox({ show: true, player: 'Draw' });
+      } else if (player1Hexagons.length > player2Hexagons.length) {
+        setShowWinBox({ show: true, player: 'Player 1' });
+      } else {
+        setShowWinBox({ show: true, player: 'Player 2' });
+      }
+      return;
+    }
+  
+    const timerId = setInterval(() => {
+      setTimeLeft(prevTime => prevTime - 1);
+    }, 1000);
+  
+    return () => clearInterval(timerId);
+  }, [timeLeft, player1Hexagons.length, player2Hexagons.length]);
 
   const handleOpenQuestionBox = (index) => {
     
@@ -46,13 +71,9 @@ function Game() {
     // Check for [0,x]
     const has0X = playerHexagons.some(hexagon => hexagon.split(',')[0] === '0');
   
-    console.log('hasN6:', hasN6, 'hasXX:', hasXX, 'has0X:', has0X);
-    console.log('hexes', playerHexagons);
-  
     if (hasN6 && hasXX && has0X) {
       // Check if connected
       const connected = areHexagonsConnected(playerHexagons);
-      console.log('Connected:', connected);
       return connected;
     }
   
@@ -159,7 +180,7 @@ function Game() {
       <Navbar />
       <div id="main">
         {showQuestionBox && <QuestionBox onSubmit={handleSubmitAnswer} />}
-        {showWinBox.show && <WinBox player={showWinBox.player === 'p1' ? 'Player 1' : 'Player 2'} />}
+        {showWinBox.show && <WinBox player={showWinBox.player} />}
         <div id="container">
           <div id="player1" className='player'>player1</div>
           
@@ -175,6 +196,7 @@ function Game() {
           <div id="player2" className='player' >player2</div>
         </div>
       </div>
+      <TimeSlider timeLeft={timeLeft} duration={durationGame}/>
     </>
   );
 }

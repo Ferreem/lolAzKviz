@@ -33,6 +33,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(18, 19, 18, 0.749);
+  backdrop-filter: blur(8px) saturate(150%);
+  border-radius: 10px;
 }
 
 .y1x1{
