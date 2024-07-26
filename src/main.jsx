@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import './styles/index.scss';
 import Game from './pages/Game';
+import Rules from './pages/Rules';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     path:"/game/:id",
     element: <Game />,
   },
+  {
+    path:"/rules",
+    element: <Rules />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

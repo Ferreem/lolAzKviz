@@ -17,18 +17,23 @@ function MainMenu() {
     navigate(`/game/${randomId}`);
   };
 
+  const handleRules = () => {
+
+    navigate(`/rules`);
+  };
+
   return (
     <>
       <Navbar />
       <div className='wrap'>
         <div className='main'>
-          <div className='header'>
+          <div className='header mb-20'>
             <Header />
           </div>
           <div className='my-10'>
             <Button onClick={handlePlayWithFriend}>Play with friend</Button>
-            <Button>Quick Play</Button>
-            <Button>Tutorial</Button>
+            <Button onClick={handlePlayWithFriend}>Quick Play</Button>
+            <Button onClick={handleRules}>Tutorial</Button>
           </div>
         </div>
       </div>
