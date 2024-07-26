@@ -28,7 +28,7 @@ function Game() {
   };
 
   const durationGame = 720;
-  const durationQuestion = 30;
+  const durationQuestion = 15;
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -114,6 +114,7 @@ function Game() {
 
   const handleSubmitAnswer = (correct) => {
     if (correct) {
+
       const newColor = currentPlayer === 'p1' ? '#0D4B8C' : '#862941';
       setHexagonStatus(prev => ({
         ...prev,
