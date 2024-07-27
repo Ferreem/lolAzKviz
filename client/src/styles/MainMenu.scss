@@ -1,0 +1,42 @@
+*{
+    color: white;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    height: 100vh;
+    background-image: url('../styles/images/mainMenu.jpg');
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+        .wrap{
+            display: flex;
+            justify-content: center;
+            margin-top: 10vh;
+
+
+        .main{
+            height: 60%;
+            padding: 5%;
+            width: 45%;
+            background-color: rgba(18, 19, 18, 0.749);
+            backdrop-filter: blur(8px) saturate(150%);
+            border-radius: 10px;
+            
+            .header{
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+    
+
+}
+
